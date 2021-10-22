@@ -1,13 +1,13 @@
-import Input from './Inputs/Inputs';
-import Progress from './Inputs/Progress';
+import Input from './Inputs';
+import Progress from './Progress';
 import Volume from './Volume';
 import CurrentSong from './CurrentSong';
 
 const Player = ({ player, playerHandler }) => {
   return (
-    <div className='player'>
+    <div className="player">
       {!player.currentSong.name ? (
-        <div className='current-song-container'></div>
+        <div className="current-song-container"></div>
       ) : (
         <CurrentSong current={player.currentSong} />
       )}

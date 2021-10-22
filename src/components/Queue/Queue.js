@@ -1,12 +1,12 @@
 import React from 'react';
-import Song from './Song';
+import Song from '../Song/Song';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 const Playlist = ({ queue, current, playerHandler }) => {
   const getQueue = () => {
     return queue.map((value) => {
       return (
-        <CSSTransition timeout={1000} classNames='song'>
+        <CSSTransition timeout={1000} classNames="song">
           <Song
             key={value.key}
             name={value.name}
@@ -22,9 +22,9 @@ const Playlist = ({ queue, current, playerHandler }) => {
   };
 
   return (
-    <div className='playlist'>
-      <h1 className='playlist-title'>Your Queue</h1>
-      <div className='songList'>
+    <div className="playlist">
+      <h1 className="playlist-title">Your Queue</h1>
+      <div className="songList">
         {queue.length === 0 ? (
           <h3>Queue is empty</h3>
         ) : (

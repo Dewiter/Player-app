@@ -1,13 +1,13 @@
 import React, { useReducer } from 'react';
-import Player from './components/player/Player';
-import Search from './components/player/Search';
-import Playlist from './components/player/Playlist';
-import Profil from './nav/Profil';
-import Navigation from './nav/Navigation';
+import Player from './Player/Player';
+import Search from './SearchBar/Search';
+import Playlist from './Queue/Queue';
+import Profil from './Nav/Profil';
+import Navigation from './Nav/Navigation';
 
-import { notifController } from './controller/notifController';
-import { playerController } from './controller/playerController';
-import Notification from './components/notifaction/Notification';
+import { notifController } from '../dispatch/notifController';
+import { playerController } from '../dispatch/playerController';
+import Notification from './Notifaction/Notification';
 
 function App() {
   const audio = document.querySelector('#audio');
@@ -31,13 +31,13 @@ function App() {
   };
 
   return (
-    <div className='app'>
-      <aside className='nav'>
+    <div className="app">
+      <aside className="nav">
         <Profil />
         <Navigation />
       </aside>
-      <div className='main'>
-        <header className='header'>
+      <div className="main">
+        <header className="header">
           <Search
             notifHandler={dispatchNotif}
             player={player}

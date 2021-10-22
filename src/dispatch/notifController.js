@@ -34,14 +34,9 @@ export const notifController = (state, action) => {
     { type: 'BAD_LINK', func: badLink },
   ];
 
-  const stateMachineValue = stateMachine.map((value) => {
-    if (value.type === action.type) {
-      return value.func();
-    }
-  });
-
-  if (stateMachineValue) {
-    return stateMachineValue.filter((value) => value !== undefined)[0];
+  const found = stateMachine.find((current) => action.type === current.type);
+  if (!found) {
+    throw new Error('no matching states found');
   }
-  throw new Error('no matching states');
+  return found.func();
 };

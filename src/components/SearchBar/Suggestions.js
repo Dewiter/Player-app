@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Button from './Inputs/Button';
+import Button from '../player/Inputs/Button';
 
 const Suggestions = ({ value, setSuggestion, first }) => {
   const [data, setData] = useState([]);
@@ -29,14 +29,14 @@ const Suggestions = ({ value, setSuggestion, first }) => {
   }, [value]);
 
   return (
-    <div className='suggestions'>
+    <div className="suggestions">
       {data.map((res) => {
         return (
-          <div className='suggestion'>
+          <div className="suggestion">
             <p>{res.name}</p>
             <Button
-              content='plus-circle'
-              customClass='btn-suggestion'
+              content="plus-circle"
+              customClass="btn-suggestion"
               onClick={setSuggestion(res)}
             />
           </div>

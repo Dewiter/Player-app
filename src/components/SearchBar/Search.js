@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { useFetch } from "../../hooks/useFetch";
-import Button from "./Inputs/Button";
-import { v4 as uuidv4 } from "uuid";
+import React, { useState, useEffect } from 'react';
+import { useFetch } from '../../hooks/useFetch';
+import Button from '../Buttons/Button';
+import { v4 as uuidv4 } from 'uuid';
 
 const Search = ({ notifHandler, player, playerHandler }) => {
-  const [link, setLink] = useState("");
+  const [link, setLink] = useState('');
   const [selectedSuggestion, setSelectedSuggestion] = useState(null);
 
   const [suggestionState, fetchSuggestion] = useFetch();
@@ -27,7 +27,7 @@ const Search = ({ notifHandler, player, playerHandler }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (suggestionState.loading || suggestionState.error) {
-      notifHandler({ type: "EMPTY_INPUT" });
+      notifHandler({ type: 'EMPTY_INPUT' });
       return;
     }
 
@@ -36,8 +36,8 @@ const Search = ({ notifHandler, player, playerHandler }) => {
       : suggestionState.value[0];
 
     const url = `${process.env.REACT_APP_BACK_END_PORT}youtube/query/`;
-    fetchData(url, "POST", JSON.stringify(send));
-    setLink("");
+    fetchData(url, 'POST', JSON.stringify(send));
+    setLink('');
   };
 
   // ---------------------------------------------------------------------------//
@@ -47,16 +47,16 @@ const Search = ({ notifHandler, player, playerHandler }) => {
     if (data.value) {
       const song = data.value.data;
       if (data.value.status === 200) {
-        notifHandler({ type: "ADD_SONG" });
+        notifHandler({ type: 'ADD_SONG' });
         song.key = uuidv4();
         song.index = player.queue.length;
         if (player.queue.length === 0) {
-          playerHandler({ type: "INIT", payload: song });
+          playerHandler({ type: 'INIT', payload: song });
           suggestionState.value = null;
-          playerHandler({ type: "PLAY" });
+          playerHandler({ type: 'PLAY' });
         } else {
-          console.log("upodate");
-          playerHandler({ type: "UPDATE", payload: song });
+          console.log('upodate');
+          playerHandler({ type: 'UPDATE', payload: song });
           suggestionState.value = null;
         }
       }
@@ -69,18 +69,18 @@ const Search = ({ notifHandler, player, playerHandler }) => {
   useEffect(() => {
     if (link) {
       document
-        .querySelector(".input-search")
-        .classList.remove("input-search-not-active");
+        .querySelector('.input-search')
+        .classList.remove('input-search-not-active');
       document
-        .querySelector(".input-search")
-        .classList.add("input-search-active");
+        .querySelector('.input-search')
+        .classList.add('input-search-active');
     } else {
       document
-        .querySelector(".input-search")
-        .classList.remove("input-search-active");
+        .querySelector('.input-search')
+        .classList.remove('input-search-active');
       document
-        .querySelector(".input-search")
-        .classList.add("input-search-not-active");
+        .querySelector('.input-search')
+        .classList.add('input-search-not-active');
     }
   }, [link]);
 
