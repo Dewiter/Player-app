@@ -1,16 +1,24 @@
 import type { NextPage } from 'next';
+
 import Search from '../components/SearchBar/Search';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useState } from 'react';
+
 interface HomePageProps {}
 
 const HomePage: NextPage<HomePageProps> = () => {
-  const printVideo = (found) => {
-    console.log(found);
-  };
+  const [queue, setQueue] = useState([]);
 
   return (
     <>
-      <h1>Hello HOMEPAGE</h1>
-      <Search onFound={printVideo} />
+      <Head>
+        <title>Player</title>
+      </Head>
+      <Link href="/dewi">
+        <a>Hello HOMEPAGE</a>
+      </Link>
+      <Search queue={queue} setQueue={setQueue} />
     </>
   );
 };

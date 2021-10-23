@@ -5,11 +5,10 @@ const Notification = ({ notifContent, notifType, closeNotif }) => {
     setTimeout(() => {
       closeNotif();
     }, 3000);
+  }, [closeNotif]);
 
-    document.querySelector('.modal').classList.add(notifType);
-  }, [notifType]);
   return (
-    <div className='modal'>
+    <div className={`modal ${notifType}`}>
       <p>{notifContent}</p>
     </div>
   );

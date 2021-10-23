@@ -1,30 +1,65 @@
+import clsx from 'clsx';
+import { useEffect, useState } from 'react';
 import { useFetch } from '../../hooks/useFetch';
-import { useEffect } from 'react';
 import type { Video } from 'ytubes/dist/types/data';
 
 interface SuggestionsProps {
-  searchString: string;
-  onFound: (video: Video) => void;
+  queue: Video[];
+  setQueue: (queue: Video[]) => void;
+  input: HTMLInputElement;
+  inputValue: string;
 }
 
-const Suggestions = ({ searchString, onFound }: SuggestionsProps) => {
+const Suggestions = ({
+  queue,
+  setQueue,
+  input,
+  inputValue,
+}: SuggestionsProps) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [data, fetchData] = useFetch<Video[]>();
 
+  const handleKeyPress = (event) => {
+    console.log(event.key);
+    if (event.key === 'Enter') {
+      setQueue([...queue, data.value[selectedIndex]]);
+      input.value = '';
+    }
+
+    if (event.code === 'ArrowUp') {
+      setSelectedIndex(
+        selectedIndex > 0 ? selectedIndex - 1 : data.value?.length - 1
+      );
+    }
+    if (event.code === 'ArrowDown') {
+      setSelectedIndex(
+        selectedIndex < data.value?.length - 1 ? selectedIndex + 1 : 0
+      );
+    }
+  };
+
   useEffect(() => {
-    if (!searchString) return;
+    if (!inputValue) return;
+    fetchData(`api/Youtube/getSuggestions`, {
+      method: 'POST',
+      body: inputValue,
+    });
+  }, [inputValue, fetchData]);
 
-    fetchData(
-      `${process.env.NEXT_PUBLIC_BACK_END_PORT}youtube/suggestions/${searchString}`
-    );
-  }, [searchString, fetchData]);
-
-  if (!searchString) return null;
+  if (!inputValue) return null;
   if (data.error) return <p>{data.error}</p>;
   if (data.loading) return <p>Loading ...</p>;
+
+  input.onkeyup = handleKeyPress;
+
   return (
     <div>
-      {data.value?.map((video) => (
-        <p key={video.id} onClick={(e) => onFound(video)}>
+      {data.value?.map((video, index) => (
+        <p
+          className={clsx({ selected: index === selectedIndex })}
+          key={video.id}
+          onClick={() => setQueue([...queue, video])}
+        >
           {video.title}
         </p>
       ))}
