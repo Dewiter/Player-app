@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 
 import Search from '../components/SearchBar/Search';
+import Player from '../components/Player/Player';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -18,7 +19,7 @@ const HomePage: NextPage<HomePageProps> = () => {
       <Link href="/dewi">
         <a>Hello HOMEPAGE</a>
       </Link>
-      <Search queue={queue} setQueue={setQueue} />
+      <Player queue={queue} />
     </>
   );
 };

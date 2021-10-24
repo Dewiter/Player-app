@@ -1,15 +1,45 @@
+import { useEffect, useState } from 'react';
 import { useAudio } from 'react-use';
+import Volume from './Volume';
+import Progress from './Progress';
 
-const AudioPlayer = () => {
+interface AudioPlayerProps {
+  src: string;
+}
+
+const AudioPlayer = ({ src }: AudioPlayerProps) => {
   const [audio, state, controls, ref] = useAudio({
-    src: 'http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Sevish_-__nbsp_.mp3',
+    src: src,
     autoPlay: true,
   });
+  const [volumeValue, setVolumeValue] = useState(0.05);
+
+  useEffect(() => {
+    controls.volume(volumeValue);
+  }, [volumeValue]);
 
   return (
     <div>
       {audio}
-      {controls.pause()}
+      {state.playing ? (
+        <button
+          onClick={() => {
+            controls.pause();
+          }}
+        >
+          pause
+        </button>
+      ) : (
+        <button
+          onClick={() => {
+            controls.play();
+          }}
+        >
+          play
+        </button>
+      )}
+      <Volume volumeValue={volumeValue} setVolume={setVolumeValue} />
+      <Progress current={state.time} duration={ref.current?.duration} />
       <pre>{JSON.stringify(state, null, 2)}</pre>
     </div>
   );

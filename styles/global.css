@@ -9,6 +9,18 @@ body {
   color: red;
 }
 
+.progress-container {
+  height: 25px;
+  background: black;
+  width: 300px;
+}
+
+.progress {
+  height: 20px;
+  width: 0;
+  background: blue;
+}
+
 #root {
   background-image: url('/public/bg.jpg');
   background-size: cover;
@@ -221,29 +233,6 @@ select:-webkit-autofill:focus {
   background: linear-gradient(0deg, #fb7cfd, #af94f8);
   border: none;
   color: white;
-}
-
-.progress-container {
-  grid-column: 3;
-  width: 50vw;
-  text-align: center;
-}
-
-.progress-container svg rect {
-  transition: fill 0.4s ease, filter 0.4s ease;
-  fill: #4c5362;
-}
-
-.progress-bg {
-  /* height: 25px; */
-  border-radius: 25px;
-  background: #353a43;
-  display: flex;
-  justify-content: center;
-}
-
-.progress {
-  height: 5vh;
 }
 
 .volume-container {
