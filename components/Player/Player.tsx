@@ -9,33 +9,29 @@ interface playerProps {
 
 const Player = ({ queue }: playerProps) => {
   const [queueIndex, setQueueIndex] = useState(0);
-  const [src, setSrc] = useState<string>();
   const [stream, setBody] = useStream();
 
-  useEffect(() => {
-    if (queue.length === 0) return;
+  const prevSong = () => {
+    setQueueIndex(queueIndex > 0 ? queueIndex - 1 : 0);
     setBody(queue[queueIndex].id);
-    if (stream.error) return;
-    if (!stream.loading) {
-      setSrc(stream.value?.stream);
-    }
-  }, [queue, queueIndex, setBody]);
+  };
+
+  const nextSong = () => {
+    setQueueIndex(queueIndex < queue.length - 1 ? queueIndex + 1 : 0);
+    setBody(queue[queueIndex].id);
+  };
+
+  useEffect(() => {
+    if (queue.length === 1) setBody(queue[queueIndex].id);
+  }, [setBody, queue, queueIndex]);
 
   return (
     <>
-      <AudioPlayer src={src} />
-      <button
-        onClick={() => setQueueIndex(queueIndex > 0 ? queueIndex - 1 : 0)}
-      >
-        prev
-      </button>
-      <button
-        onClick={() =>
-          setQueueIndex(queueIndex < queue.length - 1 ? queueIndex + 1 : 0)
-        }
-      >
-        next
-      </button>
+      <AudioPlayer
+        src={!stream.loading ? stream.value?.stream : stream.value?.stream}
+      />
+      <button onClick={prevSong}>prev</button>
+      <button onClick={nextSong}>next</button>
     </>
   );
 };
