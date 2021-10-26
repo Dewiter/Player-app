@@ -4,25 +4,19 @@ import { useFetch } from '../../hooks/useFetch';
 import type { Video } from 'ytubes/dist/types/data';
 
 interface SuggestionsProps {
-  queue: Video[];
-  setQueue: (queue: Video[]) => void;
+  addSong: (song: Video) => void;
   input: HTMLInputElement;
   inputValue: string;
 }
 
-const Suggestions = ({
-  queue,
-  setQueue,
-  input,
-  inputValue,
-}: SuggestionsProps) => {
+const Suggestions = ({ addSong, input, inputValue }: SuggestionsProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [data, fetchData] = useFetch<Video[]>();
 
   const handleKeyPress = (event) => {
-    console.log(event.key);
+    event.preventDefault();
     if (event.key === 'Enter') {
-      setQueue([...queue, data.value[selectedIndex]]);
+      addSong(data.value[selectedIndex]);
       input.value = '';
     }
 
@@ -58,7 +52,7 @@ const Suggestions = ({
         <p
           className={clsx({ selected: index === selectedIndex })}
           key={video.id}
-          onClick={() => setQueue([...queue, video])}
+          onClick={() => addSong(video)}
         >
           {video.title}
         </p>

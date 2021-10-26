@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Video } from 'ytubes/dist/types/data';
-import { useFetch } from '../../hooks/useFetch';
 import AudioPlayer from './AudioPlayer';
-import type { YtResponse } from 'youtube-dl-exec';
-import { useYTStream } from '../../hooks/useYTStream';
+import useStream from '../../hooks/useStream';
 
 interface playerProps {
   queue: Video[];
@@ -11,17 +9,21 @@ interface playerProps {
 
 const Player = ({ queue }: playerProps) => {
   const [queueIndex, setQueueIndex] = useState(0);
-  // const stream = useYTStream('_BWPNPtsZm8');
-  // console.log(stream);
+  const [src, setSrc] = useState<string>();
+  const [stream, setBody] = useStream();
 
-  const src = [
-    'http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Sevish_-__nbsp_.mp3',
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-  ];
+  useEffect(() => {
+    if (queue.length === 0) return;
+    setBody(queue[queueIndex].id);
+    if (stream.error) return;
+    if (!stream.loading) {
+      setSrc(stream.value?.stream);
+    }
+  }, [queue, queueIndex, setBody]);
 
   return (
     <>
-      <AudioPlayer src={src[queueIndex]} />
+      <AudioPlayer src={src} />
       <button
         onClick={() => setQueueIndex(queueIndex > 0 ? queueIndex - 1 : 0)}
       >
@@ -29,7 +31,7 @@ const Player = ({ queue }: playerProps) => {
       </button>
       <button
         onClick={() =>
-          setQueueIndex(queueIndex < src.length - 1 ? queueIndex + 1 : 0)
+          setQueueIndex(queueIndex < queue.length - 1 ? queueIndex + 1 : 0)
         }
       >
         next
@@ -38,4 +40,4 @@ const Player = ({ queue }: playerProps) => {
   );
 };
 
-export default Player;
+export default React.memo(Player);

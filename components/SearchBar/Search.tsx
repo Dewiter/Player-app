@@ -3,11 +3,10 @@ import Suggestions from './Suggestions';
 import type { Video } from 'ytubes/dist/types/data';
 
 interface SearchProps {
-  queue: Video[];
-  setQueue: (queue: Video[]) => void;
+  addSong: (found: Video) => void;
 }
 
-const Search = ({ queue, setQueue }: SearchProps) => {
+const Search = ({ addSong }: SearchProps) => {
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -20,8 +19,7 @@ const Search = ({ queue, setQueue }: SearchProps) => {
         ref={inputRef}
       />
       <Suggestions
-        setQueue={setQueue}
-        queue={queue}
+        addSong={addSong}
         input={inputRef.current}
         inputValue={inputValue}
       />
