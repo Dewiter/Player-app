@@ -12,7 +12,7 @@ const App = () => {
   return (
     <>
       <Search addSong={addSong} />
-      {/* <Player queue={queue} /> */}
+      <Player queue={queue} />
     </>
   );
 };

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { useAudio } from 'react-use';
-import Volume from './Volume';
-import Progress from './Progress';
+import { useEffect, useState } from "react";
+import { useAudio } from "react-use";
+import Volume from "./Volume";
+import Progress from "./Progress";
 
 interface AudioPlayerProps {
   src: string;

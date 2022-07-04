@@ -8,6 +8,7 @@ import type { stream } from '../pages/api/Youtube/getStream';
 export default function useStream() {
   const [stream, getStream] = useFetch<stream>();
   const [body, setBody] = useState<string>();
+  console.log(body);
 
   useEffect(() => {
     if (!body) return;

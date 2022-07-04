@@ -16,6 +16,6 @@
     "noEmit": true,
     "jsx": "preserve"
   },
-  "include": ["src"],
+  "include": ["./**/*"],
   "exclude": ["node_modules"]
 }

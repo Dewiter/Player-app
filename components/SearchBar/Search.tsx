@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useFetch } from "../../hooks/useFetch";
 import type { Video } from "ytubes/dist/types/data";
 import { Loader, TextInput } from "@mantine/core";
@@ -13,8 +13,6 @@ const Search = ({ addSong }: SearchProps) => {
   const [data, fetchData] = useFetch<Video[]>();
   const [input, setInput] = useState("");
 
-  const ref = useRef<HTMLInputElement>(null);
-
   const handleInput = (event) => {
     event.preventDefault();
     if (data.value) {
@@ -22,6 +20,7 @@ const Search = ({ addSong }: SearchProps) => {
         case "Enter":
           addSong(data.value[selectedIndex]);
           setInput("");
+          setSelectedIndex(0);
           break;
         case "ArrowUp":
           setSelectedIndex(
@@ -57,8 +56,7 @@ const Search = ({ addSong }: SearchProps) => {
         onChange={(e) => {
           setInput(e.target.value);
         }}
-        onKeyUp={handleInput}
-        ref={ref}
+        onKeyUp={(event) => handleInput(event)}
       />
       {input &&
         data.value?.map((value, index) => {
@@ -69,6 +67,7 @@ const Search = ({ addSong }: SearchProps) => {
               onClick={() => {
                 setInput("");
                 addSong(value);
+                setSelectedIndex(0);
               }}
             >
               {value.title}
