@@ -39,7 +39,7 @@ const AudioPlayer = ({ src }: AudioPlayerProps) => {
         </button>
       )}
       <Volume volumeValue={volumeValue} setVolume={setVolumeValue} />
-      <Progress current={state.time} duration={ref.current?.duration} />
+      <Progress current={state.time} duration={ref.current?.duration ?? 0} />
       <pre>{JSON.stringify(state, null, 2)}</pre>
     </div>
   );

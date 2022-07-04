@@ -2,38 +2,31 @@ import React, { useEffect, useState } from 'react';
 import { Video } from 'ytubes/dist/types/data';
 import AudioPlayer from './AudioPlayer';
 import useStream from '../../hooks/useStream';
+import { stream } from '../../pages/api/Youtube/getStream';
+import { Button } from '@chakra-ui/react';
 
 interface playerProps {
   queue: Video[];
 }
 
+
+
 const Player = ({ queue }: playerProps) => {
-  const [queueIndex, setQueueIndex] = useState(0);
-  const [stream, setBody] = useStream();
+    // Step 1 Button to dom
+    // link butt to event
+    const [src, setSrc] = useStream();
+    if (queue.length > 0) {
+      setSrc((queue[0].id));
+    }
 
-  const prevSong = () => {
-    setQueueIndex(queueIndex > 0 ? queueIndex - 1 : 0);
-    setBody(queue[queueIndex].id);
-  };
-
-  const nextSong = () => {
-    setQueueIndex(queueIndex < queue.length - 1 ? queueIndex + 1 : 0);
-    setBody(queue[queueIndex].id);
-  };
-
-  useEffect(() => {
-    if (queue.length === 1) setBody(queue[queueIndex].id);
-  }, [setBody, queue, queueIndex]);
-
+  // DOM
   return (
     <>
-      <AudioPlayer
-        src={!stream.loading ? stream.value?.stream : stream.value?.stream}
-      />
-      <button onClick={prevSong}>prev</button>
-      <button onClick={nextSong}>next</button>
+      {/* <AudioPlayer src={!src.loading ? src.value : ""} /> */}
+      <button>test</button>
+      <button>test2</button>
     </>
   );
 };
 
-export default React.memo(Player);
+export default (Player);

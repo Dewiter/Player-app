@@ -6,6 +6,9 @@ export type useFecthTypes = {
   options?: object;
 };
 
+// custom hook -- useFetch --
+// fetches data from based on a url if options were specified
+// they will be used in fetch
 export const useFetch = <T>() => {
   return useAsyncFn(async (url, options) => {
     return fetch(url, options)

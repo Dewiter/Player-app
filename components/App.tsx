@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { Video } from 'ytubes/dist/types/data';
-import Player from './Player/Player';
-import Search from './SearchBar/Search';
+import { useState } from "react";
+import { Video } from "ytubes/dist/types/data";
+import Player from "./Player/Player";
+import Search from "./SearchBar/Search";
 
 const App = () => {
-  const [queue, setQueue] = useState([]);
+  const [queue, setQueue] = useState<Video[]>([]);
   const addSong = (song: Video) => {
     setQueue([...queue, song]);
   };
@@ -12,7 +12,7 @@ const App = () => {
   return (
     <>
       <Search addSong={addSong} />
-      <Player queue={queue} />
+      {/* <Player queue={queue} /> */}
     </>
   );
 };
