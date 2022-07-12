@@ -1,50 +1,52 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Video } from "ytubes/dist/types/data";
 import AudioPlayer from "./AudioPlayer";
-import useStream from "../../hooks/useStream";
+import { useStream } from "../../hooks/useStream";
 import { stream } from "../../pages/api/Youtube/getStream";
 import { Button } from "@chakra-ui/react";
+
+import type { StreamInterface } from "../../hooks/useStream";
 
 interface playerProps {
   queue: Video[];
 }
 
 const Player = ({ queue }: playerProps) => {
-  const [src, setSrc] = useStream();
-  const [index, setIndex] = useState(0);
+  const streamContext = React.createContext(queue);
+  const stream = useContext(streamContext);
+  const [currentSongID, setCurrentSongID] = useState(0);
+  const { prevStream, currStream, nextStream }: StreamInterface = useStream({
+    currentSongID,
+    queue,
+  });
 
   const playNextSong = () => {
-    if (index < queue.length - 1) {
-      setIndex(index + 1);
+    if (currentSongID < queue.length - 1) {
+      setCurrentSongID(currentSongID + 1);
     } else {
-      setIndex(0);
+      setCurrentSongID(0);
     }
-    console.log(index);
   };
 
   const playPrevSong = () => {
-    if (index > 0) {
-      setIndex(index - 1);
+    if (currentSongID > 0) {
+      setCurrentSongID(currentSongID - 1);
     } else {
-      setIndex(0);
+      setCurrentSongID(0);
     }
-    console.log(index);
   };
 
   useEffect(() => {
-    if (queue.length > 0) {
-      setSrc(queue[index].id);
-    }
-    console.log(queue.length);
-  }, [queue, index]);
+    console.log(currStream);
+  }, [currStream]);
 
   // DOM
   return (
-    <>
-      <AudioPlayer src={!src.loading ? src.value?.stream ?? "" : ""} />
+    <streamContext.Provider value={queue}>
+      <AudioPlayer src={currStream} />
       <button onClick={playPrevSong}>previous</button>
       <button onClick={playNextSong}>next</button>
-    </>
+    </streamContext.Provider>
   );
 };
 

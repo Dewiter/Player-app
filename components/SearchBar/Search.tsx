@@ -10,26 +10,26 @@ interface SearchProps {
 
 const Search = ({ addSong }: SearchProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [data, fetchData] = useFetch<Video[]>();
+  const { data, error } = useFetch<Video[]>();
   const [input, setInput] = useState("");
 
   const handleInput = (event) => {
     event.preventDefault();
-    if (data.value) {
+    if (data) {
       switch (event.key) {
         case "Enter":
-          addSong(data.value[selectedIndex]);
+          addSong(data[selectedIndex]);
           setInput("");
           setSelectedIndex(0);
           break;
         case "ArrowUp":
           setSelectedIndex(
-            selectedIndex > 0 ? selectedIndex - 1 : data.value?.length - 1
+            selectedIndex > 0 ? selectedIndex - 1 : data?.length - 1
           );
           break;
         case "ArrowDown":
           setSelectedIndex(
-            selectedIndex < data.value.length - 1 ? selectedIndex + 1 : 0
+            selectedIndex < data.length - 1 ? selectedIndex + 1 : 0
           );
           break;
 
@@ -39,19 +39,19 @@ const Search = ({ addSong }: SearchProps) => {
     }
   };
 
-  useEffect(() => {
-    if (!input) return;
-    fetchData(`api/Youtube/getSuggestions`, {
-      method: "POST",
-      body: input,
-    });
-  }, [input, fetchData]);
+  // useEffect(() => {
+  //   if (!input) return;
+  //   fetchData(`api/Youtube/getSuggestions`, {
+  //     method: "POST",
+  //     body: input,
+  //   });
+  // }, [input, fetchData]);
 
   return (
     <>
       <TextInput
         placeholder="Search a song"
-        rightSection={data.loading && <Loader size="xs" />}
+        rightSection={!data && <Loader size="xs" />}
         value={input}
         onChange={(e) => {
           setInput(e.target.value);
@@ -59,7 +59,7 @@ const Search = ({ addSong }: SearchProps) => {
         onKeyUp={(event) => handleInput(event)}
       />
       {input &&
-        data.value?.map((value, index) => {
+        data?.map((value, index) => {
           return (
             <p
               className={clsx({ selected: index === selectedIndex })}

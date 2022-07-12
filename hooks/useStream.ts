@@ -1,22 +1,42 @@
-import { useEffect, useState } from 'react';
-import { useFetch } from './useFetch';
-import type { stream } from '../pages/api/Youtube/getStream';
+import { useEffect, useState } from "react";
+import { useFetch } from "./useFetch";
+import type { stream } from "../pages/api/Youtube/getStream";
+import { Video } from "ytubes/dist/types/data";
 
-
-// Custom hook -- useStream -- 
+// Custom hook -- useStream --
 // Takes in a link and generates as stream readable by the audio player
-export default function useStream() {
-  const [stream, getStream] = useFetch<stream>();
-  const [body, setBody] = useState<string>();
-  console.log(body);
+interface body {
+  currentSongID: number;
+  queue: Video[];
+}
+
+export interface StreamInterface {
+  prevStream: string;
+  currStream: string;
+  nextStream: string;
+}
+
+interface postForStream {
+  url: string;
+  id: string;
+}
+
+export const useStream = ({ currentSongID, queue }: body): StreamInterface => {
+  const [fetchedStreams, setFetchedStreams] = useState<StreamInterface>({
+    prevStream: "",
+    currStream: "",
+    nextStream: "",
+  });
 
   useEffect(() => {
-    if (!body) return;
-    getStream('/api/Youtube/getStream', {
-      method: 'POST',
-      body: body,
-    });
-  }, [body, getStream]);
+    const { data, error } =
+      !!queue[currentSongID] &&
+      useFetch<stream>("/api/Youtube/getStream", {
+        body: queue[currentSongID].id,
+      });
+    if (data) setFetchedStreams({ ...fetchedStreams, currStream: data.stream });
+  }, [queue.length]);
+  console.log(fetchedStreams);
 
-  return [stream, setBody] as const;
-}
+  return fetchedStreams;
+};

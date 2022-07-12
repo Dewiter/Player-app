@@ -10,5 +10,6 @@ export default async function getStream(
   res: NextApiResponse<stream>
 ) {
   const stream = await YoutubeDl(req.body, { dumpSingleJson: true });
+  console.log(stream.formats[0].url)
   res.status(200).json({ stream: stream.formats[0].url });
 }
